@@ -5,10 +5,10 @@ setup(
   name             = 'rgc',
   version          = __version__,
   description      = 'Cleanup old tags from docker-registry provided with GitLab',
-  url              = 'http://github.com/mvisonneau/registry-gitlab-cleaner',
+  url              = 'https://github.com/mvisonneau/docker-registry-gitlab-cleanup',
   author           = 'Maxime VISONNEAU',
   author_email     = 'maxime.visonneau@gmail.com',
-  license          = 'Apache 2.0',
+  license          = 'AGPL-3.0',
   packages         = find_packages( exclude=[ 'docs', 'tests*' ] ),
   install_requires = [
     'www_authenticate',

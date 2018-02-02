@@ -1,16 +1,16 @@
-import requests
 import json
+import requests
 import www_authenticate
 from requests.auth import HTTPBasicAuth
 
 class RegistryApi( object ):
-    def __init__( self, user, password ):
-        self.user = user
-        self.password = password
+    def __init__( self, user, token ):
+        self.user  = user
+        self.token = token
 
     @staticmethod
-    def get_token( user, password, service, scope, realm ):
-        r = requests.get( realm, auth=HTTPBasicAuth( user, password ), data={ "scope": scope, "service": service } )
+    def get_bearer_token( user, token, service, scope, realm ):
+        r = requests.get( realm, auth=HTTPBasicAuth( user, token ), data={ "scope": scope, "service": service } )
         return json.loads( r.content )['token']
 
     @staticmethod
@@ -31,12 +31,12 @@ class RegistryApi( object ):
         if method == "head":
             r = requests.head( url, headers={ 'Accept': 'application/vnd.docker.distribution.manifest.v2+json', 'Authorization': 'Bearer ' + token } )
             return( r.headers )
-        elif method == "delete":
-            r = getattr( requests, method )( url, headers={ 'Authorization': 'Bearer ' + token } )
-            return r.content
         else:
             r = getattr( requests, method )( url, headers={ 'Authorization': 'Bearer ' + token } )
-            return( json.loads( r.content ) )
+            if method == "delete":
+                return r.content
+            else:
+                return( json.loads( r.content ) )
 
     def query( self, url, method='get' ):
         params = self.get_auth_header( url, method )
@@ -45,4 +45,4 @@ class RegistryApi( object ):
         except KeyError:
             raise 'could not fetch bearer info from registry endpoint'
         else:
-            return self.get_result( url, method, self.get_token( self.user, self.password, params['Bearer']['service'], params['Bearer']['scope'], params['Bearer']['realm'] ) )
+            return self.get_result( url, method, self.get_bearer_token( self.user, self.token, params['Bearer']['service'], params['Bearer']['scope'], params['Bearer']['realm'] ) )

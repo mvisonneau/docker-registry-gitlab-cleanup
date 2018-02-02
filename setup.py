@@ -13,7 +13,8 @@ setup(
   install_requires = [
     'www_authenticate',
     'requests',
-    'python-gitlab'
+    'python-gitlab',
+    'termcolor'
   ],
   entry_points     = {
     'console_scripts': [

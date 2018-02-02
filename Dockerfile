@@ -5,5 +5,6 @@ WORKDIR /build
 ADD setup.* /build/
 ADD rgc /build/rgc
 
-RUN \
-python setup.py install
+RUN python setup.py install
+
+ENTRYPOINT [ "/usr/local/bin/rgc" ]

@@ -14,7 +14,7 @@ class GitlabClean( object ):
        self.retention       = retention
        self.exclude         = exclude
 
-    def get_projects( self ):
+    def clean_projects( self ):
         registry = RegistryApi(
             user     = self.user,
             password = self.password
@@ -22,6 +22,7 @@ class GitlabClean( object ):
 
         now = datetime.now()
 
+        print( '-> loading all projects..' )
         for project in gitlab.Gitlab( self.gitlab_url, self.password ).projects.all( all=True ):
             if project.container_registry_enabled:
                 print( '-> processing ' + project.path_with_namespace.lower() )
@@ -41,7 +42,8 @@ class GitlabClean( object ):
                             age = now - created_at
                             if age.total_seconds() > ( int( self.retention ) * 60 * 60 * 24 ):
                                 print( '--> removing ' + tag + ' (expired)')
-                                print( registry.query( self.gitlab_registry + '/v2/' + project.path_with_namespace.lower() + '/manifests/' + tag, 'delete' ) )
+                                digest = registry.query( self.gitlab_registry + '/v2/' + project.path_with_namespace.lower() + '/manifests/' + tag, 'head' )['Docker-Content-Digest']
+                                registry.query( self.gitlab_registry + '/v2/' + project.path_with_namespace.lower() + '/manifests/' + digest, 'delete' )
                             else:
                                 print( '--> keeping ' + tag + ' (not expired)')
                         else:

@@ -11,7 +11,6 @@ class RegistryApi( object ):
     @staticmethod
     def get_token( user, password, service, scope, realm ):
         r = requests.get( realm, auth=HTTPBasicAuth( user, password ), data={ "scope": scope, "service": service } )
-        print( json.loads( r.content )['token'] )
         return json.loads( r.content )['token']
 
     @staticmethod
@@ -29,8 +28,15 @@ class RegistryApi( object ):
 
     @staticmethod
     def get_result( url, method, token ):
-        r = getattr( requests, method )( url, headers={ 'Authorization': 'Bearer ' + token } )
-        return( json.loads( r.content ) )
+        if method == "head":
+            r = requests.head( url, headers={ 'Accept': 'application/vnd.docker.distribution.manifest.v2+json', 'Authorization': 'Bearer ' + token } )
+            return( r.headers )
+        elif method == "delete":
+            r = getattr( requests, method )( url, headers={ 'Authorization': 'Bearer ' + token } )
+            return r.content
+        else:
+            r = getattr( requests, method )( url, headers={ 'Authorization': 'Bearer ' + token } )
+            return( json.loads( r.content ) )
 
     def query( self, url, method='get' ):
         params = self.get_auth_header( url, method )

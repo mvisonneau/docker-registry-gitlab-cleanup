@@ -1,5 +1,7 @@
 # docker-registry-gitlab-cleanup
 
+[![Docker Pulls](https://img.shields.io/docker/pulls/mvisonneau/docker-registry-gitlab-cleanup.svg)](https://hub.docker.com/r/mvisonneau/docker-registry-gitlab-cleanup/)
+
 The goal of this tool is to be able to cleanup old image tags stored in a [GitLab](http://gitlab.org/) embedded [Docker Registry](https://docs.docker.com/registry/).
 
 # Prerequisites

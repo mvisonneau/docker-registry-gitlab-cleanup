@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
-## [0.1.0] - 2018-02-02
+## [0.1.0] - 2018-02-06
 ### FEATURES
 - Library that handles cleaning workflow with the GitLab API (v4)
 - Library that handles API requests against the Docker registry

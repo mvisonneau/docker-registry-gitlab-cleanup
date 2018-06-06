@@ -36,7 +36,10 @@ class RegistryApi( object ):
             if method == "delete":
                 return r.content
             else:
-                return( json.loads( r.content ) )
+                try:
+                    return (json.loads(r.content))
+                except ValueError:
+                    return dict()
 
     def query( self, url, method='get' ):
         params = self.get_auth_header( url, method )

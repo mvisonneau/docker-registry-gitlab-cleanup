@@ -14,6 +14,15 @@ The goal of this tool is to be able to cleanup old image tags stored in a [GitLa
 
 # Usage
 
+## Get help
+
+```bash
+docker run -it --rm \
+  mvisonneau/docker-registry-gitlab-cleanup rgc -h
+```
+
+## Cleanup registry
+
 ```bash
 docker run -it --rm \
   -e RGC_USER=<username> \

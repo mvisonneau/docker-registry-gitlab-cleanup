@@ -24,7 +24,7 @@ class GitlabClean( object ):
         now = datetime.now()
 
         print( '-> loading all projects..' )
-        for project in gitlab.Gitlab( self.gitlab_url, self.token ).projects.all( all=True ):
+        for project in gitlab.Gitlab( self.gitlab_url, self.token ).projects.list( all=True ):
             if project.container_registry_enabled:
                 print( '-> processing ' + project.path_with_namespace.lower() )
                 query_tags = registry.query( self.registry_url + '/v2/' + project.path_with_namespace.lower() + '/tags/list', 'get' )

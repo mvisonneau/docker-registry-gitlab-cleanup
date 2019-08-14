@@ -10,7 +10,9 @@ class RegistryApi( object ):
 
     @staticmethod
     def get_bearer_token( user, token, service, scope, realm ):
-        r = requests.get( realm, auth=HTTPBasicAuth( user, token ), data={ "scope": scope, "service": service } )
+        # https://stackoverflow.com/a/23497912/2860751
+        payload_str = "&".join("%s=%s" % (k,v) for k,v in { "scope": scope, "service": service}.items())
+        r = requests.get( realm, auth=HTTPBasicAuth( user, token ), params=payload_str )
         return json.loads( r.content )['token']
 
     @staticmethod
